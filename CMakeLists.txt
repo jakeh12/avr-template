@@ -4,8 +4,8 @@ SET(CMAKE_SYSTEM_NAME Generic)
 #============================================================================================
 PROJECT(avr-clion)
 
-SET(DEVICE "atmega8")
-SET(FREQ "4000000")
+SET(DEVICE "atmega256rfr2")
+SET(FREQ "16000000")
 
 #============================================================================================
 
@@ -22,7 +22,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/bin")
 SET(SOURCE_FILES
 
         main.c
-        easyavr.h
+
 
    )
 
