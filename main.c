@@ -96,6 +96,23 @@ void display_reset(void)
     PORTD |= _BV(DISP_RST);
 }
 
+void display_reset_cursor(void)
+{
+    display_write_instruction(SSD1306_SET_PAGE_START_ADDR);
+    display_write_instruction(SSD1306_SET_COL_HI_NIBBLE);
+    display_write_instruction(SSD1306_SET_COL_LO_NIBBLE);
+}
+
+
+void display_clear(void)
+{
+    display_reset_cursor();
+    for (uint16_t byte = 0; byte < SSD1306_PIXEL_BYTES; byte++)
+    {
+        display_write_data (0x00);
+    }
+}
+
 void display_init(void)
 {
     spi_init();
@@ -133,8 +150,11 @@ void display_init(void)
 
     display_write_instruction(SSD1306_SET_VCOM_DESELECT_LEVEL);
     display_write_instruction(0x40);
+    display_write_instruction(SSD1306_MEM_ADDRESSING);
+    display_write_instruction(0x00);
 
     display_write_instruction(SSD1306_RESUME_TO_RAM_CONTENT);
+
 
     display_write_instruction(SSD1306_DISP_NORMAL);
 
@@ -144,21 +164,15 @@ void display_init(void)
 
 }
 
-void display_reset_cursor(void)
-{
-    display_write_instruction(SSD1306_SET_PAGE_START_ADDR);
-    display_write_instruction(SSD1306_SET_COL_HI_NIBBLE);
-    display_write_instruction(SSD1306_SET_COL_LO_NIBBLE);
-}
-
-void display_test(void)
+void display_test(uint8_t divider)
 {
     display_reset_cursor();
     for (uint16_t byte = 0; byte < SSD1306_PIXEL_BYTES; byte++)
     {
-        if (byte % 2 == 0)
+        if (byte % divider == 0)
         {
             display_write_data (0xFF);
+
         }
         else
         {
@@ -167,14 +181,7 @@ void display_test(void)
     }
 }
 
-void display_clear(void)
-{
-    display_reset_cursor();
-    for (uint16_t byte = 0; byte < SSD1306_PIXEL_BYTES; byte++)
-    {
-            display_write_data (0x00);
-    }
-}
+
 
 int main()
 {
@@ -183,17 +190,20 @@ int main()
     CLKPR = 0x00;
 
     display_init();
-
-    display_test();
+    display_clear();
 
     DDRB |= _BV(PB4);
 
+    uint8_t divider = 0;
     while(1)
     {
         PORTB |= _BV(PB4);
-        _delay_ms(100);
+        _delay_ms(1);
         PORTB &= ~_BV(PB4);
-        _delay_ms(100);
+        _delay_ms(1);
+        display_test(divider);
+        divider++;
+
     }
 
 
