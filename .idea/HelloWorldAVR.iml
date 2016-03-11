@@ -8,8 +8,18 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">
       <library name="Header Search Paths">
-        <CLASSES />
-        <SOURCES />
+        <CLASSES>
+          <root url="file:///usr/local/include" />
+          <root url="file:///usr/local/lib/gcc/avr/4.9.2/include" />
+          <root url="file:///usr/local/lib/gcc/avr/4.9.2/include-fixed" />
+          <root url="file:///usr/local/avr/include" />
+        </CLASSES>
+        <SOURCES>
+          <root url="file:///usr/local/include" />
+          <root url="file:///usr/local/lib/gcc/avr/4.9.2/include" />
+          <root url="file:///usr/local/lib/gcc/avr/4.9.2/include-fixed" />
+          <root url="file:///usr/local/avr/include" />
+        </SOURCES>
       </library>
     </orderEntry>
   </component>

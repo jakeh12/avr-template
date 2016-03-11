@@ -11,20 +11,22 @@ SET(PROGRAMMER "xplainedpro")
 
 #============================================================================================
 
-SET(CMAKE_C_COMPILER avr-gcc)
-SET(CMAKE_CXX_COMPILER avr-g++)
+SET(CMAKE_C_COMPILER /usr/local/bin/avr-gcc)
+SET(CMAKE_CXX_COMPILER /usr/local/bin/avr-g++)
 
 SET(CMAKE_C_FLAGS  "-Os -mmcu=${DEVICE} -DF_CPU=${FREQ}UL -std=gnu99 -Wl,--gc-sections")
 SET(CMAKE_CXX_FLAGS "-Os -mmcu=${DEVICE} -DF_CPU=${FREQ}UL -Wl,--gc-sections")
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/bin")
 
+INCLUDE_DIRECTORIES("/usr/local/include")
+
 #============================================================================================
+
 
 SET(SOURCE_FILES
 
         main.c
-
 
    )
 
