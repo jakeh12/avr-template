@@ -26,8 +26,7 @@ INCLUDE_DIRECTORIES("/usr/local/include")
 
 SET(SOURCE_FILES
 
-        main.c
-        oled.c)
+        oled.c main.c)
 
 #============================================================================================
 

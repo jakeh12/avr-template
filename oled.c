@@ -1,14 +1,19 @@
 #include "oled.h"
 #include "font.h"
 
-
-
-
 void spi_init(void)
 {
     DDRB |= _BV(DISP_D_C) | _BV(DISP_SCK) | _BV(DISP_MOSI);
     DDRD |= _BV(DISP_RST);
     DDRG |= _BV(DISP_SEL);
+
+    /*
+    DDRB |= _BV(DISP_SCK) | _BV(DISP_MOSI);
+    DDRD |= _BV(DISP_RST);
+    DDRE |= _BV(DISP_D_C);
+    DDRG |= _BV(DISP_SEL);
+     */
+
     SPCR = _BV(SPE) | _BV(MSTR);
 }
 
@@ -57,6 +62,7 @@ void display_clear(void)
     {
         display_write_data (0x00);
     }
+    display_reset_cursor();
 }
 
 void display_init(void)
@@ -112,11 +118,19 @@ void display_init(void)
 
 }
 
-void display_print_letter(uint8_t letter)
+void display_print_letter(char letter)
 {
+    if (letter < 32) { letter = 32; }
+    else if (letter > 126) { letter = 126; }
+
+    char render;
+
     for (uint8_t byte = 0; byte < 8; byte++)
     {
-        display_write_data(font[letter][byte]);
+        render = font[letter - 32][byte];
+        render = &(font[letter - 32][byte]);
+        render = pgm_read_byte(&(font[letter - 32][byte]));
+        display_write_data(render);
     }
 }
 
@@ -129,16 +143,16 @@ void display_print_string(char* string)
     }
 }
 
-void lprintf(const char* format, ...)
+void display_printf(const char* format, ...)
 {
     char string[128];
     char* string_p = string;
     va_list args;
     va_start(args, format);
     vsprintf(string_p, format, args);
-    va_end( args );
+    va_end(args);
 
-    display_write_instruction(SSD1306_SET_PAGE_START_ADDR);
+    //display_write_instruction(SSD1306_SET_PAGE_START_ADDR);
     while(*string_p != 0x00)
     {
         display_print_letter(*string_p++);

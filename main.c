@@ -1,4 +1,5 @@
 #include "oled.h"
+//#include "io.h"
 
 int main()
 {
@@ -7,7 +8,6 @@ int main()
     CLKPR = 0x00;
 
     display_init();
-
-    lprintf("Pre-scale: 0x%02X", 0xA3);
+    display_printf("The quick brown fox jumps over the lazy dog.");
 
 }

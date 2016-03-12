@@ -4,11 +4,20 @@
 #include <stdio.h>
 #include <stdarg.h>
 
+// EXT3
 #define DISP_D_C    PB7
 #define DISP_RST    PD7
 #define DISP_SCK    PB1
 #define DISP_MOSI   PB2
 #define DISP_SEL    PG2
+
+/*
+#define DISP_D_C    PE2
+#define DISP_RST    PD5
+#define DISP_SCK    PB1
+#define DISP_MOSI   PB2
+#define DISP_SEL    PG0
+*/
 
 #define SSD1306_X_PIXELS 		128
 #define SSD1306_Y_PIXELS 		32
@@ -69,6 +78,5 @@ void display_reset(void);
 void display_reset_cursor(void);
 void display_clear(void);
 void display_init(void);
-void display_print_letter(uint8_t letter);
-void display_print_string(char* string);
-void lprintf(const char* format, ...);
+void display_print_letter(char letter);
+void display_printf(const char* format, ...);
