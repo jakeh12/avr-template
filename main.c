@@ -1,7 +1,8 @@
-#include "oled.h"
+#include "oled/oled.h"
 
 int main()
 {
     display_init();
-    display_printf("The quick brown fox jumps over the %s dog.", "lazy");
+    char netid[] = "jhladik";
+    display_printf("%s@iastate.edu", netid);
 }
