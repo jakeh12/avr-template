@@ -128,7 +128,7 @@ void display_print_letter(char letter)
     for (uint8_t byte = 0; byte < 8; byte++)
     {
         render = font[letter - 32][byte];
-        render = &(font[letter - 32][byte]);
+        render = (int)&(font[letter - 32][byte]);
         render = pgm_read_byte(&(font[letter - 32][byte]));
         display_write_data(render);
     }
