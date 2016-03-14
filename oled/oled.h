@@ -67,3 +67,7 @@ void display_clear(void);
 void display_init(void);
 void display_print_letter(char letter);
 void display_printf(const char* format, ...);
+void display_ciprintf(const char* format, ...);
+void display_cnprintf(const char* format, ...);
+
+

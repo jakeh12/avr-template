@@ -114,7 +114,7 @@ void display_init(void)
 
     display_write_instruction(SSD1306_DISP_ON);
 
-    //display_write_instruction(SSD1306_DISP_INVERTED);
+    display_write_instruction(SSD1306_DISP_NORMAL);
 
 }
 
@@ -153,6 +153,45 @@ void display_printf(const char* format, ...)
     va_end(args);
 
     //display_write_instruction(SSD1306_SET_PAGE_START_ADDR);
+    display_write_instruction(SSD1306_DISP_NORMAL);
+    while(*string_p != 0x00)
+    {
+        display_print_letter(*string_p++);
+    }
+}
+
+void display_ciprintf(const char* format, ...)
+{
+    char string[128];
+    char* string_p = string;
+    va_list args;
+    va_start(args, format);
+    vsprintf(string_p, format, args);
+    va_end(args);
+
+    display_clear();
+    display_write_instruction(SSD1306_SET_PAGE_START_ADDR);
+    display_write_instruction(SSD1306_DISP_INVERTED);
+
+    while(*string_p != 0x00)
+    {
+        display_print_letter(*string_p++);
+    }
+}
+
+void display_cnprintf(const char* format, ...)
+{
+    char string[128];
+    char* string_p = string;
+    va_list args;
+    va_start(args, format);
+    vsprintf(string_p, format, args);
+    va_end(args);
+
+    display_clear();
+    display_write_instruction(SSD1306_SET_PAGE_START_ADDR);
+    display_write_instruction(SSD1306_DISP_NORMAL);
+
     while(*string_p != 0x00)
     {
         display_print_letter(*string_p++);

@@ -6,6 +6,7 @@ PROJECT(avr-clion)
 
 SET(DEVICE "atmega256rfr2")
 SET(FREQ "16000000")
+SET(BAUD "19200")
 SET(PROGRAMMER "xplainedpro")
 
 
@@ -14,8 +15,8 @@ SET(PROGRAMMER "xplainedpro")
 SET(CMAKE_C_COMPILER /usr/local/bin/avr-gcc)
 SET(CMAKE_CXX_COMPILER /usr/local/bin/avr-g++)
 
-SET(CMAKE_C_FLAGS  "-Os -mmcu=${DEVICE} -DF_CPU=${FREQ}UL -std=gnu99 -Wl,--gc-sections")
-SET(CMAKE_CXX_FLAGS "-Os -mmcu=${DEVICE} -DF_CPU=${FREQ}UL -Wl,--gc-sections")
+SET(CMAKE_C_FLAGS  "-Os -mmcu=${DEVICE} -DF_CPU=${FREQ}UL -DBAUD=${BAUD} -std=gnu99 -Wl,--gc-sections")
+SET(CMAKE_CXX_FLAGS "-Os -mmcu=${DEVICE} -DF_CPU=${FREQ}UL -DBAUD=${BAUD} -Wl,--gc-sections")
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/bin")
 
@@ -25,8 +26,11 @@ INCLUDE_DIRECTORIES("/usr/local/include")
 
 
 SET(SOURCE_FILES
-
-        oled/oled.c main.c)
+        config/config.c
+        oled/oled.c
+        rf/rf.c
+        main.c
+        )
 
 #============================================================================================
 
