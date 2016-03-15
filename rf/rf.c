@@ -1,10 +1,12 @@
 #include "rf.h"
 #include "../oled/oled.h"
 
-static uint8_t rf_buffer[RF_BUFFER_SIZE];
+uint8_t rf_buffer[RF_BUFFER_SIZE];
 
-uint8_t rssi = 0;
-uint8_t crc = 0;
+uint8_t rf_length = 0;
+uint8_t rf_rssi = 0;
+uint8_t rf_crc = 0;
+
 
 uint8_t map(uint8_t x, uint8_t in_min, uint8_t in_max, uint8_t out_min, uint8_t out_max)
 {
@@ -55,7 +57,6 @@ void rf_transmit(uint8_t* frame, uint8_t length)
 {
     if (length > 127) { length = 127; } // make sure length is always less than 128
 
-
     TRX_STATE = (TRX_STATE & ~(_BV(TRX_CMD2) | _BV(TRX_CMD1))) | _BV(TRX_CMD3) | _BV(TRX_CMD0); // state = PLL_ON (TX_ON)
 
     while(TRX_STATUS3 & TRX_STATUS0); // wait for PLL to lock on the right frequency
@@ -80,26 +81,42 @@ ISR(TRX24_TX_END_vect) // interrupt for the end of transmission
 ISR(TRX24_RX_START_vect) //interrupt for beginning receiving frame
 {
     PORTB &= ~_BV(PB4);
-    rssi = PHY_RSSI & 0x1F; // save signal strength 4:0RSSI rx strength (0 min, 28 max)
+    rf_rssi = PHY_RSSI & 0x1F; // save signal strength 4:0RSSI rx strength (0 min, 28 max)
 }
 
 ISR(TRX24_RX_END_vect) // interrupt for finished receiving frame
 {
+    rf_crc =  (PHY_RSSI & 0x80) >> 7;
 
-    crc =  (PHY_RSSI & 0x80) >> 7;
-
-    if (rssi && crc) // if signal strength is more than -90 dBm and CRC is valid
+    if (rf_rssi && rf_crc) // if signal strength is more than -90 dBm and CRC is valid
     {
-        memcpy(&rf_buffer, (void*)&TRXFBST, TST_RX_LENGTH); // copy content of the buffer to the variable
-        display_cnprintf("RSSI:%d%% CRC: %d", map(rssi, 0, 28, 0, 100), crc);
+        rf_length = TST_RX_LENGTH;
+
+        memcpy(&rf_buffer, (void*)&TRXFBST, rf_length); // copy content of the buffer to the variable
+        //display_cnprintf("RSSI:%d%% CRC: %d", map(rssi, 0, 28, 0, 100), crc);
 
     }
     else // corrupted package
     {
-        display_ciprintf("RSSI:%d%% CRC: %d", map(rssi, 0, 28, 0, 100), crc);
+        //display_ciprintf("RSSI:%d%% CRC: %d", map(rssi, 0, 28, 0, 100), crc);
     }
 
     PORTB |= _BV(PB4);
 
+}
 
+uint8_t rf_available()
+{
+    if (rf_length)
+    {
+        return rf_length - 2;
+
+    }
+    return rf_length;
+}
+
+void rf_read(uint8_t* to)
+{
+    memcpy(to, rf_buffer, rf_length-2);
+    rf_length = 0;
 }

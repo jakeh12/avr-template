@@ -1,6 +1,8 @@
 #include "config/config.h"
 #include "oled/oled.h"
 #include "rf/rf.h"
+#include "debug/debug.h"
+
 //#include "usart/usart.h"
 
 int main()
@@ -8,19 +10,22 @@ int main()
     atmega_init();
     display_init();
     rf_init();
+    display_ciprintf("Initializing...");
     _delay_ms(1000);
+    display_cnprintf("Listening...");
 
-    display_cnprintf("Active");
-    _delay_ms(500);
-
-    uint8_t frame [4]= {0xA0, 0xEF, 0x04, 0x32};
-
-    rf_transmit(frame, 4);
-
+    char message[20] = "";
+    uint8_t length = 0;
     while(1)
     {
-        rf_transmit(frame, 4);
-        _delay_ms(250);
+        length = rf_available();
+        if (length)
+        {
+            display_cnprintf("Received:                       ");
+            rf_read(message);
+            print_hex_dump(message, length);
+        }
     }
+
 
 }
