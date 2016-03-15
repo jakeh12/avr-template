@@ -3,24 +3,31 @@
 #include "rf/rf.h"
 #include "debug/debug.h"
 
-//#include "usart/usart.h"
+#include "usart/usart.h"
+
+void append(char* s, char c)
+{
+    int len = strlen(s);
+    s[len] = c;
+    s[len+1] = '\0';
+}
+
 
 int main()
 {
     atmega_init();
     display_init();
+    usart_init();
     rf_init();
-    display_cnprintf("Initializing...");
+    display_ciprintf("Initializing...");
     _delay_ms(1000);
-    display_cnprintf("Transmitting...                 ");
+    display_cnprintf("Transmitting... ");
 
-    uint8_t message[4] = {0x10, 0x11, 0x12, 0x13};
-
-    print_hex_dump(message, 4);
+    char buffer[2] = "";
 
     while(1)
     {
-        rf_transmit(message, 4);
-        _delay_ms(1000);
+        buffer[0] = usart_receive();
+        rf_transmit(buffer, strlen(buffer));
     }
 }

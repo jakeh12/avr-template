@@ -29,7 +29,8 @@ SET(SOURCE_FILES
         config/config.c
         oled/oled.c
         rf/rf.c
-        main.c
+        usart/usart.c
+        main_tx.c
         debug/debug.c
         )
 

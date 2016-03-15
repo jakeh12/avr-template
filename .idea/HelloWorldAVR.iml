@@ -4,11 +4,13 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/oled/oled.c" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/oled/oled.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/usart/usart.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/usart/usart.c" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/rf/rf.c" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/rf/rf.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/main.c" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/debug/debug.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/debug/debug.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/main_tx.c" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/config/config.c" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/config/config.h" isTestSource="false" />

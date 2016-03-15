@@ -120,3 +120,13 @@ void rf_read(uint8_t* to)
     memcpy(to, rf_buffer, rf_length-2);
     rf_length = 0;
 }
+
+uint8_t link_power()
+{
+    return map(rf_rssi, 0, 28, 0, 100);
+}
+
+uint8_t crc_res()
+{
+    return rf_crc;
+}

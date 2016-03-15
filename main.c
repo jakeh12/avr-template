@@ -12,7 +12,7 @@ int main()
     rf_init();
     display_ciprintf("Initializing...");
     _delay_ms(1000);
-    display_cnprintf("Listening...");
+    display_cnprintf("Listening...    ");
 
     char message[20] = "";
     uint8_t length = 0;
@@ -21,9 +21,9 @@ int main()
         length = rf_available();
         if (length)
         {
-            display_cnprintf("Received:                       ");
+            //display_cnprintf("RX P: %d%% CRC: %d >> ", link_power(), crc_res());
             rf_read(message);
-            print_hex_dump(message, length);
+            display_printf("%s", message);
         }
     }
 

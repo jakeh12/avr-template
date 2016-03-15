@@ -11,3 +11,5 @@ void rf_init();
 void rf_transmit(uint8_t* frame, uint8_t length);
 uint8_t rf_available();
 void rf_read(uint8_t* to);
+uint8_t link_power();
+uint8_t crc_res();
